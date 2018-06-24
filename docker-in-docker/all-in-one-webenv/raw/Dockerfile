@@ -46,18 +46,16 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
         echo ""; \
         echo "nohup sh $(which dockerd-entrypoint.sh) 1>~/dockerd.log 2>&1 &"; \
         echo ""; \
-		echo "sleep 15"; \
+		echo "sleep 10"; \
 		echo "docker rm -f mysql5 mysql8 redis4 laravel tomcat debian"; \
 		echo "docker run --name redis4 -v /root/webenv/redis4_data:/data \\"; \
 		echo "        --rm -d -p 6379:6379 redis:latest redis-server --appendonly yes "; \
 		echo "docker run --name mysql5 \\"; \
-	    echo "        -v /root/webenv/mysql5_data:/var/lib/mysql \\"; \
-	    echo "        -e MYSQL_DATABASE=admin -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin \\"; \
-        echo "        --rm -d -p 3305:3306 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5 "; \
+	    echo "        -v /root/webenv/mysql5_data:/var/lib/mysql --rm -d \\"; \
+        echo "        -p 3305:3306 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5 "; \
 		# echo "docker run --name mysql8 \\"; \
 		# echo "        -v /root/webenv/mysql8_data:/var/lib/mysql \\"; \
 		# echo "        --rm -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD=root \\"; \
-		# echo "        -e MYSQL_DATABASE=admin -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin \\"; \
 		# echo "        mysql:latest "; \
 		echo "docker run --name laravel --link mysql5 --link redis4 \\"; \
 		echo "        --rm -d -p 81:80 -v /root/webenv/laravel:/var/www/html \\"; \
