@@ -48,29 +48,28 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
         echo ""; \
 		echo "sleep 15"; \
 		echo "docker rm -f mysql5 mysql8 redis4 laravel tomcat debian"; \
-		echo "docker run --name redis4 -v /root/redis4_data:/data \\"; \
+		echo "docker run --name redis4 -v /root/webenv/redis4_data:/data \\"; \
 		echo "        --rm -d -p 6379:6379 redis:latest redis-server --appendonly yes "; \
 		echo "docker run --name mysql5 \\"; \
-	    echo "        -v /root/mysql5_data:/var/lib/mysql \\"; \
-	    echo "        --rm -d -p 3305:3306 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root \\"; \
+	    echo "        -v /root/webenv/mysql5_data:/var/lib/mysql \\"; \
 	    echo "        -e MYSQL_DATABASE=admin -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin \\"; \
-		echo "        mysql:5 "; \
+        echo "        --rm -d -p 3305:3306 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5 "; \
 		# echo "docker run --name mysql8 \\"; \
-		# echo "        -v /root/mysql8_data:/var/lib/mysql \\"; \
+		# echo "        -v /root/webenv/mysql8_data:/var/lib/mysql \\"; \
 		# echo "        --rm -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD=root \\"; \
 		# echo "        -e MYSQL_DATABASE=admin -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin \\"; \
 		# echo "        mysql:latest "; \
 		echo "docker run --name laravel --link mysql5 --link redis4 \\"; \
-		echo "        --rm -d -p 81:80 -v /root/laravel:/var/www/html \\"; \
+		echo "        --rm -d -p 81:80 -v /root/webenv/laravel:/var/www/html \\"; \
 		echo "        registry.cn-beijing.aliyuncs.com/stable/201806:laravel-env "; \
 		echo "docker run --name tomcat --link mysql5 --link redis4 \\"; \
-		echo "        -v /root/tomcat/webapps:/usr/local/tomcat/webapps/webapps \\"; \
-		echo "        --rm -d -p 8080:8080 tomcat:9-jre10 "; \
+		echo "        -v /root/webenv/tomcat/webapps:/usr/local/tomcat/webapps/webapps \\"; \
+		echo "        --rm -d -p 8080:8080 tomcat:9-jre10"; \
 		# echo "docker run --name laravel --link mysql5 --link mysql8 --link redis4 \\"; \
-		# echo "        --rm -d -p 81:80 -v /root/laravel:/var/www/html \\"; \
+		# echo "        --rm -d -p 81:80 -v /root/webenv/laravel:/var/www/html \\"; \
 		# echo "        registry.cn-beijing.aliyuncs.com/stable/201806:laravel-env "; \
 		# echo "docker run --name tomcat --link mysql5 --link mysql8 --link redis4 \\"; \
-		# echo "        -v /root/tomcat/webapps:/usr/local/tomcat/webapps/webapps \\"; \
+		# echo "        -v /root/webenv/tomcat/webapps:/usr/local/tomcat/webapps/webapps \\"; \
 		# echo "        --rm -d -p 8080:8080 tomcat:9-jre10 "; \
 		echo "docker ps -a && docker run --rm --name debian -it debian:stretch-slim"; \
         # echo "while ((1))"; \
@@ -87,8 +86,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
     && chmod +x /usr/local/bin/docker-compose
 
 VOLUME /var/lib/docker
-
-EXPOSE 2375
+# EXPOSE 2375
 EXPOSE 81
 EXPOSE 8080
 EXPOSE 3305
